@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <random>
+#include <fstream>
 
 #include "GameObject.h"
 #include "shader.h"
@@ -24,6 +25,28 @@ public:
 		mScaleRange = std::uniform_real_distribution<float>(0.8f, 3.0f);
 		mXOffsetRange = std::uniform_real_distribution<float>(0.0f, 30.0f);
 		Reset();
+
+		struct stat buffer;
+		if (stat("highscore.txt", &buffer) == 0)
+		{
+			std::ifstream input;
+			input.open("highscore.txt");
+			std::string line;
+			std::getline(input, line);
+			highScore = std::stoi(line);
+			input.close();
+		}
+	}
+
+	~ObstacleManager()
+	{
+		std::ofstream writeHighScore;
+		writeHighScore.open("highscore.txt");
+		writeHighScore.clear();
+		if (currentScore > highScore)
+			highScore = currentScore;
+		writeHighScore << highScore;
+		writeHighScore.close();
 	}
 
 	void Update(GLFWwindow* window, double deltaTime)
