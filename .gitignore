@@ -3,7 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=c++
 
 ### C++ ###
-
+/x64
 *.c
 *.tlog
 *.log
